@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Контакты</title>
-</head>
+<head><meta charset="UTF-8"><title>Контакты</title></head>
 <body>
-    <h1>Контакты музея</h1>
-    <p>Телефон: +7 705 4522585</p>
-    <a href="/">На главную</a>
+    <nav>
+        <a href="{{ route('home') }}">Главная</a> |
+        <a href="{{ route('about') }}">О проекте</a> |
+        <a href="{{ route('contacts') }}">Контакты</a>
+    </nav>
+    <h1>Контакты</h1>
+    <p>Адрес: В Костанае</p>
+    <p>Телефон: -0 666 674942</p>
 </body>
 </html>

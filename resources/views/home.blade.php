@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Музей</title>
+    <title>{{ config('app.name') }}</title>
 </head>
 <body>
-    <h1>Добро пожаловать в музей!</h1>
-    <p>Тут штуки жоские</p>
-
     <nav>
-        <a href="/about">О музее</a> |
-        <a href="/contacts">Контакты</a>
+        <a href="{{ route('home') }}">Главная</a> |
+        <a href="{{ route('about') }}">О музее</a> |
+        <a href="{{ route('contacts') }}">Контакты</a>
     </nav>
+    <h1>Добро пожаловать</h1>
+    <p>Это музей жоский</p>
 </body>
 </html>

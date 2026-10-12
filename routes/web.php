@@ -1,23 +1,26 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExhibitController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/about', function () {
-    return view('about');
-});
+    return view('about', [
+        'name' => 'Иванов Иван', // Укажите ваши ФИО
+        'group' => 'ИС-21'     // Укажите вашу группу
+    ]);
+})->name('about');
 
 Route::get('/contacts', function () {
     return view('contacts');
+})->name('contacts');
+
+Route::get('/hello/{name}', function (string $name) {
+    return 'Здравствуйте, ' . $name . '! Добро пожаловать в Музей.';
 });
 
-Route::get('/hello/{name}', function ($name) {
-    return 'Здравствуйте, ' . $name . '!';
-});
-
-Route::get('/exhibits/{id}', [ExhibitController::class, 'show']);
+Route::get('/exhibits/{id}', function (string $id) {
+    return view('exhibit', ['id' => $id]);
+})->whereNumber('id')->name('exhibits.show');
