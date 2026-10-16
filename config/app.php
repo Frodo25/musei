@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Almaty',
 
     /*
     |--------------------------------------------------------------------------
@@ -117,10 +117,13 @@ return [
     | Supported drivers: "file", "cache", "array"
     |
     */
-
+    'admin_key' => env('ADMIN_KEY'),
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
 ];
+Route::prefix('admin')->name('admin.')->middleware('admin.key')->group(function () {
+
+});
