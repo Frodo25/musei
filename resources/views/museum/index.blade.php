@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Каталог музея</title>
-</head>
-<body>
-    <h1>Каталог экспонатов</h1>
-    <ul>
-        @foreach ($items as $id => $item)
-            <li>
-                <a href="{{ route('exhibits.show', ['id' => $id]) }}">{{ $item['title'] }}</a>
-            </li>
+@extends('layouts.app')
+
+@section('title', 'Каталог экспонатов')
+
+@section('content')
+    <h1>Каталог экспонатов музея</h1>
+
+    <div class="exhibits-grid">
+        @foreach($items as $id => $item)
+            <div class="exhibit-card">
+                <h3>{{ $item['title'] ?? 'Без названия' }}</h3>
+                <p><strong>Автор:</strong> {{ $item['author'] ?? 'Неизвестен' }}</p>
+                <p><strong>Год:</strong> {{ $item['year'] ?? 'Н/Д' }}</p>
+                <a href="{{ route('catalog.show', $id) }}" class="btn">Подробнее</a>
+            </div>
         @endforeach
-    </ul>
-    <p><a href="{{ route('home') }}">← На главную</a></p>
-</body>
-</html>
+    </div>
+@endsection

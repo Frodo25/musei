@@ -1,16 +1,10 @@
 <?php
-
+use App\Http\Controllers\Admin\ExhibitController as AdminExhibitController;
+use App\Http\Controllers\Admin\HallController as AdminHallController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\ExhibitController; // Или ваш контроллер каталога
+use App\Http\Controllers\ExhibitController; 
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
-// Задание 2: Страницы через PageController
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
@@ -54,3 +48,13 @@ Route::get('/admin/logout', function () {
     session()->forget('is_admin');
     return redirect('/');
 })->name('admin.logout');
+
+
+
+
+
+Route::resource('halls', App\Http\Controllers\Admin\HallController::class)->except('show');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('exhibits', AdminExhibitController::class)->except('show');
+    Route::resource('halls', AdminHallController::class)->except('show');
+});

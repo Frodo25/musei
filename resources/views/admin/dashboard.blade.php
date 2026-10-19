@@ -11,6 +11,5 @@
         <li><a href="{{ route('admin.museum') }}">Управление экспонатами</a></li>
         <li><a href="{{ route('admin.logout') }}">Выйти из админки</a></li>
     </ul>
-    <p><a href="{{ route('home') }}">← На главную сайт</a></p>
 </body>
 </html>
