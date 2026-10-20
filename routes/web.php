@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\HallController as AdminHallController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ExhibitController; 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
@@ -57,4 +59,22 @@ Route::resource('halls', App\Http\Controllers\Admin\HallController::class)->exce
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('exhibits', AdminExhibitController::class)->except('show');
     Route::resource('halls', AdminHallController::class)->except('show');
+});
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('exhibits', App\Http\Controllers\Admin\ExhibitController::class)->except('show');
+});
+
+
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
+    Route::get('/login', [LoginController::class, 'create'])->name('login');
+    Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:5,1');
+});
+
+Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-panel'])->group(function () {
+    Route::resource('exhibits', Admin\ExhibitController::class)->except('show');
+    Route::resource('halls', Admin\HallController::class)->except('show');
 });

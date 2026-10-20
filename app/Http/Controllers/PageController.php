@@ -8,7 +8,7 @@ class PageController extends Controller
 {
     public function home()
     {
-        return view('home'); // Убрали 'pages.'
+        return view('home'); 
     }
 
     public function about()
@@ -16,16 +16,15 @@ class PageController extends Controller
         return view('about', [
             'name' => 'Алишер', 
             'group' => '3ПОВТ24Б'
-        ]); // Убрали 'pages.'
+        ]); 
     }
 
     public function contacts()
     {
-        return view('contacts'); // Убрали 'pages.'
+        return view('contacts'); 
     }
 
     public function rules()
     {
-        return view('rules'); // Убрали 'pages.'
-    }
-}
+        return view('rules'); 
+}}

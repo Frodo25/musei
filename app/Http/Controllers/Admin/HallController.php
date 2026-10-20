@@ -42,7 +42,6 @@ class HallController extends Controller
 
     public function destroy(Hall $hall)
     {
-        // Проверка: если в зале есть экспонаты, удалять запрещено!
         if ($hall->exhibits()->exists()) {
             return back()->with('error', 'Нельзя удалить зал: в нем еще есть экспонаты!');
         }

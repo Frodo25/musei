@@ -27,6 +27,7 @@ class StoreExhibitRequest extends FormRequest
             'year'         => ['required', 'integer', 'between:-5000,' . date('Y')],
             'description'  => ['nullable', 'string', 'max:2000'],
             'is_published' => ['boolean'],
+            'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 
