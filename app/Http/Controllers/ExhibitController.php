@@ -1,67 +1,65 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
+use App\Models\Exhibit;
+use App\Models\Hall;
+use App\Http\Requests\StoreExhibitRequest;
+use App\Http\Requests\UpdateExhibitRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ExhibitController extends Controller
 {
+    public function downloadCatalog()
+    {
+    $exhibits = Exhibit::all();
+    $pdf = Pdf::loadView('pdf.catalog', compact('exhibits'));
+    return $pdf->download('museum-catalog.pdf');
+    }
     public function index()
     {
-        $items = config('catalog.items', config('catalog', []));
-
-        return view('museum.index', ['items' => $items]);
+        $exhibits = Exhibit::with('hall')->latest()->paginate(15);
+        return view('admin.exhibits.index', compact('exhibits'));
     }
 
-    public function show(int $id)
+    public function create()
     {
-        $items = config('catalog.items', config('catalog', []));
-
-        if (!isset($items[$id])) {
-            abort(404);
-        }
-
-        $item = $items[$id];
-
-        return view('museum.show', ['id' => $id, 'item' => $item]);
+        $halls = Hall::orderBy('name')->get();
+        return view('admin.exhibits.create', compact('halls'));
     }
+
     public function store(StoreExhibitRequest $request)
     {
-    Exhibit::create($request->validated() + ['user_id' => $request->user()->id]);
-
-    return redirect()->route('admin.exhibits.index')
-        ->with('success', 'Экспонат успешно добавлен');
     $data = $request->validated();
 
-    if ($request->hasFile('cover')) {
-        $data['cover'] = $request->file('cover')->store('covers', 'public');
+    if ($request->hasFile('attachment')) {
+    $data['attachment'] = $request->file('attachment')->store('attachments');
     }
 
     Exhibit::create($data + ['user_id' => $request->user()->id]);
 
-    return redirect()->route('admin.exhibits.index')->with('success', 'Экспонат успешно добавлен');
-}
-
-public function update(UpdateExhibitRequest $request, Exhibit $exhibit)
-{
-    Gate::authorize('update', $exhibit);
-    $data = $request->validated();
-
-    if ($request->hasFile('cover')) {
-        Storage::disk('public')->delete($exhibit->cover ?? '');
-        $data['cover'] = $request->file('cover')->store('covers', 'public');
+    return redirect()->route('admin.exhibits.index')->with('success', 'Экспонат добавлен!');
     }
 
-    $exhibit->update($data);
-
-    return redirect()->route('admin.exhibits.index')->with('success', 'Изменения сохранены');
+    public function edit(Exhibit $exhibit)
+    {
+        $halls = Hall::orderBy('name')->get();
+        return view('admin.exhibits.edit', compact('exhibit', 'halls'));
     }
-    public function destroy(Exhibit $exhibit){
-    Gate::authorize('delete', $exhibit);
-    Storage::disk('public')->delete($exhibit->cover ?? '');
-    $exhibit->delete();
 
-    return back()->with('success', 'Экспонат удален');
+    public function update(UpdateExhibitRequest $request, Exhibit $exhibit)
+    {
+        $exhibit->update($request->validated());
+
+        return redirect()->route('admin.exhibits.index')
+            ->with('success', 'Изменения сохранены');
+    }
+
+    public function destroy(Exhibit $exhibit)
+    {
+        $exhibit->delete();
+
+        return back()->with('success', 'Экспонат удален');
     }
 }

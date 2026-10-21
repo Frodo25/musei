@@ -5,7 +5,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Hall;
 use App\Http\Requests\StoreHallRequest;
 use App\Http\Requests\UpdateHallRequest;
-
 class HallController extends Controller
 {
     public function index()

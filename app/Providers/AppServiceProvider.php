@@ -5,7 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
-
+use App\Contracts\SmsSender;
+use App\Services\Sms\LogSmsSender;
+use App\Services\Sms\NullSmsSender;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+    $this->app->singleton(SmsSender::class, function () {
+        return match (config('services.sms.driver')) {
+            'log'   => new LogSmsSender(),
+            default => new NullSmsSender(),
+        };
+    });
     }
 
     /**

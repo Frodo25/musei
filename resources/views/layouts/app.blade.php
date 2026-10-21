@@ -50,19 +50,16 @@
     </div>
 </nav>
 
-
-    <nav>
-        <a href="{{ route('home') }}">Главная</a>
-        <a href="{{ route('about') }}">О музее</a>
-        <a href="{{ route('catalog') }}">Каталог</a>
-        <a href="{{ route('contacts') }}">Контакты</a>
+    <nav style="margin-bottom: 20px;">
+        <a href="{{ route('home') }}">Главная</a> |
+        <a href="{{ route('about') }}">О музее</a> |
+        <a href="{{ route('catalog') }}">Каталог</a> |
+        <a href="{{ route('contacts') }}">Контакты</a> |
         <a href="{{ route('rules') }}">Правила</a>
     </nav>
 
-    <main>
-        @yield('content')
-    </main>
     <div class="container">
+        {{-- Уведомления об успехе/ошибках --}}
         @if (session('success'))
             <div style="background-color: #c6f6d5; color: #22543d; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
                 {{ session('success') }}
@@ -75,7 +72,10 @@
             </div>
         @endif
 
-        @yield('content')
+        {{-- Основной контент (вызывается ровно один раз) --}}
+        <main>
+            @yield('content')
+        </main>
     </div>
 </body>
 </html>

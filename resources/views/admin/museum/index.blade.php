@@ -23,7 +23,7 @@
         @endforeach
     </table>
     <p style="margin-top: 20px;">
-        <a href="{{ route('admin.dashboard') }}">← Назад в админку</a>
+        <a href="{{ route('admin.dashboard') }}">← Назад</a>
     </p>
 </body>
 </html>

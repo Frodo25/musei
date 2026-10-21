@@ -5,7 +5,6 @@
 @section('content')
     <h1>Список экспонатов (Админ-панель)</h1>
     
-    <!-- Кнопка добавления нового экспоната -->
     <div style="margin: 15px 0;">
         <a href="{{ route('admin.exhibits.create') }}" style="padding: 8px 12px; background: #2b6cb0; color: white; text-decoration: none; border-radius: 5px;">+ Добавить экспонат</a>
     </div>
