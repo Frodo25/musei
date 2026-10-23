@@ -8,7 +8,12 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\ExhibitController;
 use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\CatalogController;
-// Публичные страницы
+Route::get('/locale/{locale}', function (string $locale) {
+    if (in_array($locale, ['ru', 'kk', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('locale');
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
@@ -19,19 +24,15 @@ Route::get('/hello/{name}', function (string $name) {
     return 'Здравствуйте, ' . $name . '! Добро пожаловать в Музей.';
 });
 
-// Каталог для пользователей
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/catalog/{id}', [CatalogController::class, 'show'])->whereNumber('id')->name('catalog.show');
 
 Route::get('/exhibits', [CatalogController::class, 'index'])->name('exhibits.index');
 Route::get('/exhibits/{id}', [CatalogController::class, 'show'])->whereNumber('id')->name('exhibits.show');
-
-// Скачивание файлов
 Route::get('/exhibits/{exhibit}/download', function ($exhibit) {
     return Storage::download($exhibit->attachment);
 })->middleware('auth');
 
-// Авторизация и регистрация
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);
@@ -41,15 +42,13 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
 
-// Админ-панель (единый правильный блок)
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-panel'])->group(function () {
     Route::view('/', 'admin.dashboard')->name('dashboard');
-    
-    // Ресурсы админки
+
     Route::resource('exhibits', ExhibitController::class)->except('show');
     Route::resource('halls', HallController::class)->except('show');
     
-    // Старая музейная страница
+    // Старая музейная штука
     Route::get('/museum', function () {
         $items = [
             1 => ['title' => 'Золотой человек', 'author' => 'Саглы', 'year' => 1970],

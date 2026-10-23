@@ -56,6 +56,9 @@
         <a href="{{ route('catalog') }}">Каталог</a> |
         <a href="{{ route('contacts') }}">Контакты</a> |
         <a href="{{ route('rules') }}">Правила</a>
+        <a href="{{ route('locale', 'ru') }}" @if(app()->getLocale() == 'ru') style="font-weight: bold;" @endif>RU</a> | 
+        <a href="{{ route('locale', 'kk') }}" @if(app()->getLocale() == 'kk') style="font-weight: bold;" @endif>ҚАЗ</a> | 
+        <a href="{{ route('locale', 'en') }}" @if(app()->getLocale() == 'en') style="font-weight: bold;" @endif>EN</a>
     </nav>
 
     <div class="container">

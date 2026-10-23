@@ -65,6 +65,5 @@
         <input type="checkbox" name="is_published" value="1" id="is_published" class="form-check-input" {{ old('is_published', $exhibit->is_published ?? true) ? 'checked' : '' }}>
         <label for="is_published" class="form-check-label">Опубликовано на сайте</label>
     </div>
-
-    <button type="submit" class="btn btn-success">Сохранить</button>
+    <button type="submit" class="btn btn-success">{{ __('Save') }}</button>
 </form>
