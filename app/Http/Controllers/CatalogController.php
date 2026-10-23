@@ -10,7 +10,6 @@ class CatalogController extends Controller
     public function index()
     {
         $exhibits = Exhibit::with('hall')->latest()->paginate(15);
-        // Возвращаем обычный публичный шаблон (без кнопок удаления)
         return view('catalog.index', compact('exhibits'));
     }
 

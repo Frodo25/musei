@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\ExhibitController;
 use App\Http\Controllers\Api\V1\HallController;
-
 Route::prefix('v1')->name('api.v1.')->middleware('throttle:60,1')->group(function () {
     Route::get('/ping', fn () => response()->json([
         'status' => 'ok', 
@@ -12,6 +11,12 @@ Route::prefix('v1')->name('api.v1.')->middleware('throttle:60,1')->group(functio
     ], 200, [], JSON_UNESCAPED_UNICODE));
 
     Route::apiResource('exhibits', ExhibitController::class)->only(['index', 'show']);
+    Route::get('/halls', [HallController::class, 'index'])->name('halls.index');
+    Route::get('/halls/{hall}/exhibits', [HallController::class, 'exhibits'])->name('halls.exhibits');
+    Route::get('/ping', fn () => ['status' => 'ok', 'time' => now()->toIso8601String()]);
+
+    Route::apiResource('exhibits', ExhibitController::class)->only(['index', 'show']);
+
     Route::get('/halls', [HallController::class, 'index'])->name('halls.index');
     Route::get('/halls/{hall}/exhibits', [HallController::class, 'exhibits'])->name('halls.exhibits');
 });

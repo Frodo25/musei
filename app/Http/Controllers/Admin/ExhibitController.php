@@ -8,15 +8,17 @@ use App\Models\Hall;
 use App\Http\Requests\StoreExhibitRequest;
 use App\Http\Requests\UpdateExhibitRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class ExhibitController extends Controller
 {
     public function downloadCatalog()
     {
-    $exhibits = Exhibit::all();
-    $pdf = Pdf::loadView('pdf.catalog', compact('exhibits'));
-    return $pdf->download('museum-catalog.pdf');
+        $exhibits = Exhibit::all();
+        $pdf = Pdf::loadView('pdf.catalog', compact('exhibits'));
+        return $pdf->download('museum-catalog.pdf');
     }
+
     public function index()
     {
         $exhibits = Exhibit::with('hall')->latest()->paginate(15);
@@ -29,17 +31,30 @@ class ExhibitController extends Controller
         return view('admin.exhibits.create', compact('halls'));
     }
 
-    public function store(StoreExhibitRequest $request)
+    public function store(Request $request)
     {
-    $data = $request->validated();
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'hall_id' => 'required|exists:halls,id',
+            'year' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'is_published' => 'nullable|boolean',
+            'cover' => 'nullable|image|max:2048',
+            'attachment' => 'nullable|file|max:5120',
+        ]);
 
-    if ($request->hasFile('attachment')) {
-    $data['attachment'] = $request->file('attachment')->store('attachments');
-    }
+        if ($request->hasFile('cover')) {
+            $validated['cover'] = $request->file('cover')->store('covers', 'public');
+        }
 
-    Exhibit::create($data + ['user_id' => $request->user()->id]);
+        if ($request->hasFile('attachment')) {
+            $validated['attachment'] = $request->file('attachment')->store('attachments', 'public');
+        }
 
-    return redirect()->route('admin.exhibits.index')->with('success', 'Экспонат добавлен!');
+        Exhibit::create($validated);
+        
+        return redirect()->route('admin.exhibits.index')->with('success', 'Экспонат успешно создан!');
     }
 
     public function edit(Exhibit $exhibit)
@@ -50,7 +65,17 @@ class ExhibitController extends Controller
 
     public function update(UpdateExhibitRequest $request, Exhibit $exhibit)
     {
-        $exhibit->update($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('cover')) {
+            $validated['cover'] = $request->file('cover')->store('covers', 'public');
+        }
+
+        if ($request->hasFile('attachment')) {
+            $validated['attachment'] = $request->file('attachment')->store('attachments', 'public');
+        }
+
+        $exhibit->update($validated);
 
         return redirect()->route('admin.exhibits.index')
             ->with('success', 'Изменения сохранены');

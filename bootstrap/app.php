@@ -5,7 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Throwable;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -19,14 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'age.check' => \App\Http\Middleware\CheckAge::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request, \Throwable $e) => $request->is('api/*') || $request->expectsJson()
-        );
+->withExceptions(function (Exceptions $exceptions) {
+    $exceptions->shouldRenderJsonWhen(
+        fn (Request $request, Throwable $e) => $request->is('api/*') || $request->expectsJson()
+    );
 
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->is('api/*')) {
-                return response()->json(['message' => 'Запись не найдена'], 404);
-            }
-        });
-    })->create();
+    $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+        if ($request->is('api/*')) {
+            return response()->json(['message' => 'Запись не найдена'], 404);
+        }
+    });
+})->create();

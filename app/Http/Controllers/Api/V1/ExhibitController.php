@@ -16,25 +16,22 @@ class ExhibitController extends Controller
             'sort'     => ['nullable', 'in:title,year,-year'],
             'per_page' => ['nullable', 'integer', 'between:1,50'],
         ]);
-
         $sort = $data['sort'] ?? 'title';
-
         $exhibits = Exhibit::with('hall')
-            ->when($data['q'] ?? null, function ($query, $search) {
-                return $query->where('title', 'like', "%{$search}%");
-            })
-            ->when($data['hall'] ?? null, function ($query, $hallId) {
-                return $query->where('hall_id', $hallId);
-            })
+            ->when($data['q'] ?? null, fn ($q, $search) => $q->where('title', 'like', "%{$search}%"))
+            ->when($data['hall'] ?? null, fn ($q, $h) => $q->where('hall_id', $h))
             ->orderBy(ltrim($sort, '-'), str_starts_with($sort, '-') ? 'desc' : 'asc')
             ->paginate($data['per_page'] ?? 10)
             ->withQueryString();
-
         return ExhibitResource::collection($exhibits);
     }
-
     public function show(Exhibit $exhibit)
     {
         return new ExhibitResource($exhibit->load('hall'));
+    }
+    public function random()
+    {
+    $exhibit = Exhibit::with('hall')->inRandomOrder()->first();
+    return $exhibit ? new ExhibitResource($exhibit) : response()->json(['message' => 'Нет экспонатов'], 404);
     }
 }

@@ -3,9 +3,8 @@
 @section('title', 'Каталог экспонатов')
 
 @section('content')
-    <h1>Каталог экспонатов музея</h1>
 
-    <table border="1" cellpadding="8" style="width:100%; margin-top:15px; border-collapse:collapse;">
+    <h1>Каталог экспонатов музея</h1>
         <thead>
             <tr>
                 <th>Название</th>
@@ -16,12 +15,6 @@
         </thead>
         <tbody>
             @forelse($exhibits as $exhibit)
-                <tr>
-                    <td>{{ $exhibit->title }}</td>
-                    <td>{{ $exhibit->author }}</td>
-                    <td>{{ $exhibit->hall->name ?? 'Без зала' }}</td>
-                    <td>{{ $exhibit->year }}</td>
-                </tr>
             @empty
                 <tr><td colspan="4">Экспонатов пока нет</td></tr>
             @endforelse
@@ -31,4 +24,18 @@
     <div style="margin-top: 15px;">
         {{ $exhibits->links() }}
     </div>
+    @foreach($exhibits as $exhibit)
+    <div class="exhibit-card">
+        {{-- Проверяем, загружена ли обложка --}}
+        @if($exhibit->cover)
+            {{-- Выводим картинку через asset и публичную ссылку storage --}}
+            <img src="{{ asset('storage/' . $exhibit->cover) }}" alt="{{ $exhibit->title }}" width="200">
+        @else
+            <img src="{{ asset('images/no-image.png') }}" alt="Нет фото" width="200">
+        @endif
+
+        <h3>{{ $exhibit->title }}</h3>
+        <p>Автор: {{ $exhibit->author }}</p>
+    </div>
+    @endforeach
 @endsection

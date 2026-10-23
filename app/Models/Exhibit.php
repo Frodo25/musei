@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Exhibit extends Model
 {
     protected $fillable = [
-        'hall_id',
         'title',
         'author',
+        'hall_id',
         'year',
         'description',
+        'is_published',
         'cover',
-        'user_id',
+        'attachment',
     ];
 
     public function hall(): BelongsTo

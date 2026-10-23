@@ -1,29 +1,30 @@
-<form method="POST" action="{{ $action }}">
+<form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
     @isset($exhibit)
         @method('PUT')
     @endisset
 
-    <div style="margin-bottom: 12px;">
-        <label>Название экспоната:</label><br>
-        <input type="text" name="title" value="{{ old('title', $exhibit->title ?? '') }}" 
-               style="{{ $errors->has('title') ? 'border: 2px solid red;' : '' }}">
+    <!-- Название -->
+    <div class="mb-3">
+        <label for="title" class="form-label">Название экспоната:</label>
+        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $exhibit->title ?? '') }}">
         @error('title') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
     </div>
 
-    <div style="margin-bottom: 12px;">
-        <label>Автор / Мастер:</label><br>
-        <input type="text" name="author" value="{{ old('author', $exhibit->author ?? '') }}"
-               style="{{ $errors->has('author') ? 'border: 2px solid red;' : '' }}">
+    <!-- Автор -->
+    <div class="mb-3">
+        <label for="author" class="form-label">Автор / Мастер:</label>
+        <input type="text" name="author" id="author" class="form-control" value="{{ old('author', $exhibit->author ?? '') }}">
         @error('author') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
     </div>
 
-    <div style="margin-bottom: 12px;">
-        <label>Зал:</label><br>
-        <select name="hall_id" style="{{ $errors->has('hall_id') ? 'border: 2px solid red;' : '' }}">
+    <!-- Зал -->
+    <div class="mb-3">
+        <label for="hall_id" class="form-label">Зал:</label>
+        <select name="hall_id" id="hall_id" class="form-control">
             <option value="">-- Выберите зал --</option>
-            @foreach ($halls as $hall)
-                <option value="{{ $hall->id }}" @selected(old('hall_id', $exhibit->hall_id ?? '') == $hall->id)>
+            @foreach($halls as $hall)
+                <option value="{{ $hall->id }}" {{ (old('hall_id', $exhibit->hall_id ?? '') == $hall->id) ? 'selected' : '' }}>
                     {{ $hall->name }}
                 </option>
             @endforeach
@@ -31,25 +32,39 @@
         @error('hall_id') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
     </div>
 
-    <div style="margin-bottom: 12px;">
-        <label>Год создания:</label><br>
-        <input type="number" name="year" value="{{ old('year', $exhibit->year ?? '') }}"
-               style="{{ $errors->has('year') ? 'border: 2px solid red;' : '' }}">
+    <!-- Год -->
+    <div class="mb-3">
+        <label for="year" class="form-label">Год создания:</label>
+        <input type="number" name="year" id="year" class="form-control" value="{{ old('year', $exhibit->year ?? '') }}">
         @error('year') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
     </div>
 
-    <div style="margin-bottom: 12px;">
-        <label>Описание:</label><br>
-        <textarea name="description" rows="4">{{ old('description', $exhibit->description ?? '') }}</textarea>
+    <!-- Описание -->
+    <div class="mb-3">
+        <label for="description" class="form-label">Описание:</label>
+        <textarea name="description" id="description" class="form-control">{{ old('description', $exhibit->description ?? '') }}</textarea>
         @error('description') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
     </div>
 
-    <div style="margin-bottom: 12px;">
-        <label>
-            <input type="checkbox" name="is_published" value="1"
-                @checked(old('is_published', $exhibit->is_published ?? true))> Опубликовано на сайте
-        </label>
+    <!-- Обложка (Картинка) -->
+    <div class="mb-3">
+        <label for="cover" class="form-label">Обложка (изображение):</label><br>
+        <input type="file" name="cover" id="cover" accept="image/*" class="form-control">
+        @error('cover') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
     </div>
 
-    <button type="submit">Сохранить</button>
+    <!-- Дополнительный файл / документ -->
+    <div class="mb-3">
+        <label for="attachment" class="form-label">Документ / Файл:</label><br>
+        <input type="file" name="attachment" id="attachment" class="form-control">
+        @error('attachment') <div style="color: red; font-size: 0.9em;">{{ $message }}</div> @enderror
+    </div>
+
+    <!-- Публикация -->
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="is_published" value="1" id="is_published" class="form-check-input" {{ old('is_published', $exhibit->is_published ?? true) ? 'checked' : '' }}>
+        <label for="is_published" class="form-check-label">Опубликовано на сайте</label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Сохранить</button>
 </form>
