@@ -9,7 +9,8 @@ use App\Http\Requests\StoreExhibitRequest;
 use App\Http\Requests\UpdateExhibitRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-
+use App\Notifications\NewExhibitNotification;
+use Illuminate\Support\Facades\Auth;
 class ExhibitController extends Controller
 {
     public function downloadCatalog()
@@ -53,7 +54,7 @@ class ExhibitController extends Controller
         }
 
         Exhibit::create($validated);
-        
+        Auth::user()->notify(new NewExhibitNotification($exhibit));
         return redirect()->route('admin.exhibits.index')->with('success', 'Экспонат успешно создан!');
     }
 
@@ -87,4 +88,4 @@ class ExhibitController extends Controller
 
         return back()->with('success', 'Экспонат удален');
     }
-}
+}   

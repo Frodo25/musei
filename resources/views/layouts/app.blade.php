@@ -80,5 +80,22 @@
             @yield('content')
         </main>
     </div>
+    <div class="notifications-dropdown" style="margin: 10px 0; padding: 10px; background: #edf2f7; border-radius: 5px;">
+    <strong>Уведомления:</strong>
+    <ul>
+        @auth
+            @forelse(auth()->user()->unreadNotifications as $notification)
+                <li style="margin-top: 5px;">
+                    {{ $notification->data['message'] }}
+                    <a href="{{ route('admin.exhibits.show', $notification->data['exhibit_id']) }}" style="margin-left: 10px; font-size: 12px;">Посмотреть</a>
+                </li>
+            @empty
+                <li style="color: #718096; font-size: 13px;">Новых уведомлений нет</li>
+            @endforelse
+        @else
+            <li style="color: #718096; font-size: 13px;">Войдите, чтобы видеть уведомления</li>
+        @endauth
+    </ul>
+</div>
 </body>
 </html>

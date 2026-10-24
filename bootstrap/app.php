@@ -5,7 +5,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
+use App\Http\Middleware\SetLocale;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -17,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.key' => \App\Http\Middleware\CheckAdminKey::class,
             'age.check' => \App\Http\Middleware\CheckAge::class,
+        ]);
+        $middleware->web(append: [
+            SetLocale::class,
         ]);
     })
 ->withExceptions(function (Exceptions $exceptions) {

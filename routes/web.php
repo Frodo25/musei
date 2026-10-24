@@ -48,7 +48,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-panel'])-
     Route::resource('exhibits', ExhibitController::class)->except('show');
     Route::resource('halls', HallController::class)->except('show');
     
-    // Старая музейная штука
     Route::get('/museum', function () {
         $items = [
             1 => ['title' => 'Золотой человек', 'author' => 'Саглы', 'year' => 1970],
@@ -67,3 +66,9 @@ Route::get('/admin/logout', function () {
     session()->forget('is_admin');
     return redirect('/');
 })->name('admin.logout');
+Route::get('/locale/{lang}', function ($lang) {
+    if (in_array($lang, ['ru', 'kk', 'en'])) {
+        session(['locale' => $lang]);
+    }
+    return redirect()->back();
+})->name('locale');

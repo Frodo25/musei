@@ -10,8 +10,7 @@
     <p><strong>Год создания:</strong> {{ $item['year'] }}</p>
 
     <p style="margin-top: 20px;">
-        <a href="{{ route('catalog') }}">← Вернуться в каталог</a> | 
-        <a href="{{ route('home') }}">На главную</a>
+        <a href="{{ route('museum.index') }}">← Назад к списку экспонатов</a>
     </p>
 </body>
 </html>
