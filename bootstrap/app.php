@@ -19,8 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.key' => \App\Http\Middleware\CheckAdminKey::class,
             'age.check' => \App\Http\Middleware\CheckAge::class,
         ]);
+        
         $middleware->web(append: [
-            SetLocale::class,
+            \App\Http\Middleware\SetLocale::class,
         ]);
     })
 ->withExceptions(function (Exceptions $exceptions) {

@@ -1,6 +1,6 @@
 {
     "(and :count more error)": "(and :count more error)",
-    "(and :count more errors)": "(and :count more error)|(and :count more errors)|(and :count more errors)",
+    "(and :count more errors)": "(and :count more errors)",
     "A decryption key is required.": "A decryption key is required.",
     "A Timeout Occurred": "A Timeout Occurred",
     "Accept": "Accept",
@@ -228,5 +228,21 @@
     "Web Server is Down": "Web Server is Down",
     "Whoops!": "Whoops!",
     "Yes": "Yes",
-    "You are receiving this email because we received a password reset request for your account.": "You are receiving this email because we received a password reset request for your account."
+    "You are receiving this email because we received a password reset request for your account.": "You are receiving this email because we received a password reset request for your account.",
+    
+    "Главная": "Home",
+    "О музее": "About Museum",
+    "Каталог": "Catalog",
+    "Контакты": "Contacts",
+    "Правила": "Rules",
+    "Добро пожаловать в музей": "Welcome to the museum",
+    "Официальный сайт нашего музея. Здесь вы можете посмотреть уникальные экспонаты.": "Official website of our museum. Here you can view unique exhibits.",
+    "Правила посещения музея": "Museum Visiting Rules",
+    "Фото и видеосъемка разрешена без вспышки.": "Photo and video recording is allowed without flash.",
+    "Запрещено трогать экспонаты руками.": "It is forbidden to touch the exhibits with your hands.",
+    "Большие сумки и рюкзаки необходимо сдавать в гардероб.": "Large bags and backpacks must be checked in the cloakroom.",
+    "Уведомления:": "Notifications:",
+    "Войдите, чтобы видеть уведомления": "Log in to see notifications",
+    "Вход": "Login",
+    "Регистрация": "Register"
 }

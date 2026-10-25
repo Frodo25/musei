@@ -8,12 +8,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\ExhibitController;
 use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\CatalogController;
-Route::get('/locale/{locale}', function (string $locale) {
-    if (in_array($locale, ['ru', 'kk', 'en'])) {
-        session(['locale' => $locale]);
-    }
-    return back();
-})->name('locale');
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
@@ -66,9 +60,9 @@ Route::get('/admin/logout', function () {
     session()->forget('is_admin');
     return redirect('/');
 })->name('admin.logout');
-Route::get('/locale/{lang}', function ($lang) {
-    if (in_array($lang, ['ru', 'kk', 'en'])) {
-        session(['locale' => $lang]);
+Route::get('/locale/{locale}', function (string $locale) {
+    if (in_array($locale, ['ru', 'kk', 'en'])) {
+        session(['locale' => $locale]);
     }
-    return redirect()->back();
+    return back();
 })->name('locale');

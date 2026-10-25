@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,11 +51,11 @@
 </nav>
 
     <nav style="margin-bottom: 20px;">
-        <a href="{{ route('home') }}">Главная</a> |
-        <a href="{{ route('about') }}">О музее</a> |
-        <a href="{{ route('catalog') }}">Каталог</a> |
-        <a href="{{ route('contacts') }}">Контакты</a> |
-        <a href="{{ route('rules') }}">Правила</a>
+        <a href="{{ route('home') }}">{{ __('Главная') }}</a>
+        <a href="{{ route('about') }}">{{ __('О музее') }}</a>
+        <a href="{{ route('catalog') }}">{{ __('Каталог') }}</a>
+        <a href="{{ route('contacts') }}">{{ __('Контакты') }}</a>
+        <a href="{{ route('rules') }}">{{ __('Правила') }}</a>
         <a href="{{ route('locale', 'ru') }}" @if(app()->getLocale() == 'ru') style="font-weight: bold;" @endif>RU</a> | 
         <a href="{{ route('locale', 'kk') }}" @if(app()->getLocale() == 'kk') style="font-weight: bold;" @endif>ҚАЗ</a> | 
         <a href="{{ route('locale', 'en') }}" @if(app()->getLocale() == 'en') style="font-weight: bold;" @endif>EN</a>
@@ -80,21 +80,10 @@
             @yield('content')
         </main>
     </div>
-    <div class="notifications-dropdown" style="margin: 10px 0; padding: 10px; background: #edf2f7; border-radius: 5px;">
-    <strong>Уведомления:</strong>
+<div class="mt-4">
+    <h3 class="font-bold">{{ __('Уведомления:') }}</h3>
     <ul>
-        @auth
-            @forelse(auth()->user()->unreadNotifications as $notification)
-                <li style="margin-top: 5px;">
-                    {{ $notification->data['message'] }}
-                    <a href="{{ route('admin.exhibits.show', $notification->data['exhibit_id']) }}" style="margin-left: 10px; font-size: 12px;">Посмотреть</a>
-                </li>
-            @empty
-                <li style="color: #718096; font-size: 13px;">Новых уведомлений нет</li>
-            @endforelse
-        @else
-            <li style="color: #718096; font-size: 13px;">Войдите, чтобы видеть уведомления</li>
-        @endauth
+        <li>{{ __('Войдите, чтобы видеть уведомления') }}</li>
     </ul>
 </div>
 </body>
