@@ -88,4 +88,31 @@ class ExhibitController extends Controller
 
         return back()->with('success', 'Экспонат удален');
     }
-}   
+}
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Museum API Documentation",
+ *      description="Документация REST API для музейного проекта (ЛР №16)"
+ * )
+ * @OA\Server(
+ *      url="http://127.0.0.1:8000",
+ *      description="Локальный сервер"
+ * )
+ */
+class ExhibitApiController extends Controller
+{
+    /**
+     * @OA\Get(
+     *      path="/api/v1/exhibits",
+     *      operationId="getExhibitsList",
+     *      tags={"Exhibits"},
+     *      summary="Получить список всех экспонатов",
+     *      @OA\Response(response=200, description="Успешный ответ")
+     * )
+     */
+    public function index()
+    {
+        return response()->json(Exhibit::all());
+    }
+}

@@ -6,6 +6,31 @@ use App\Http\Resources\ExhibitResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\ExhibitApiController;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Museum API Documentation",
+ *      description="Документация REST API для музейного проекта (ЛР №16)"
+ * )
+ * @OA\Server(
+ *      url="http://127.0.0.1:8000",
+ *      description="Локальный сервер"
+ * )
+ */
+
+Route::get('/v1/exhibits', [ExhibitApiController::class, 'index']);
+
+
+
+
+
+
+
+
+
 
 Route::prefix('v1')->name('api.v1.')->middleware('throttle:60,1')->group(function () {
     Route::get('/ping', fn () => response()->json([

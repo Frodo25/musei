@@ -1,0 +1,29 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Museum API Documentation",
+    "version": "1.0.0",
+    "description": "Документация REST API для музейного проекта (ЛР №16)"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000"
+    }
+  ],
+  "paths": {
+    "/api/v1/exhibits": {
+      "get": {
+        "summary": "Получить список всех экспонатов",
+        "operationId": "getExhibitsList",
+        "tags": [
+          "Exhibits"
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ"
+          }
+        }
+      }
+    }
+  }
+}
